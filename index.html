@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page - Dra. Suellen</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <section class="section-hero">
+        <div class="container">
+            <h1 class="hero-title">
+                <span class="w-400">A </span><span class="w-700">Menopausa</span> <span class="w-500">Não<br>Precisa Ser</span><span class="w-700"> SOLITÁRIA.</span>
+            </h1>
+            <div class="hero-divider-small"></div>
+            <p class="hero-description">
+                Um espaço seguro para mulheres que estão cansadas<br>
+                de ouvir que é frescura, exagero ou coisa da sua cabeça,<br>
+                quando, na verdade, seu corpo inteiro está passando<br>
+                por uma transformação profunda.
+            </p>
+        </div>
+    </section>
+
+    <div class="main-divider-container">
+        <div class="curved-line"></div>
+    </div>
+
+    <section class="section-vsl">
+        <div class="container">
+            <h2 class="vsl-title">Assista ao vídeo abaixo</h2>
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/BHcG3Eapj4Y" 
+                    title="Vídeo VSL" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section-cta">
+        <div class="container-cta">
+            <div class="cta-content">
+                <h2 class="cta-title">Entre agora na Central<br>da Menopausa</h2>
+            </div>
+
+            <div class="cta-form-box">
+                <!-- FORMULÁRIO SIMPLES -->
+                <div>
+                    <div class="input-group">
+                        <label for="name">Nome:</label>
+                        <input type="text" id="name" placeholder="Seu nome completo" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">E-mail:</label>
+                        <input type="email" id="email" placeholder="Seu@email.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="whatsapp">Whatsapp (com DDD)</label>
+                        <input type="text" id="whatsapp" placeholder="(99) 9 9999-9999" required>
+                    </div>
+
+                    <!-- BOTÃO COM ID CORRETO -->
+                    <button type="button" id="btnEnviar" class="btn-submit">
+                        QUERO PARTICIPAR
+                        <img src="images/seta.svg" alt="Seta" class="btn-icon">
+                    </button>
+
+                    <p class="form-footer-text">
+                        Não se preocupe. Se tiver qualquer dúvida, nossa equipe<br>
+                        entrará em contato com você com cuidado e atenção.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+// CÓDIGO FINAL QUE FUNCIONA 100%
+
+// 1. Criar cliente Supabase CORRETAMENTE
+const supabaseClient = window.supabase.createClient(
+    'https://ellisuzzlwgpmpdjnkdl.supabase.co',
+    'sb_publishable_pjsMKzTKT9v7n7yZwvimHg_Rrcjfjuv'
+);
+
+console.log('✅ Supabase configurado!');
+
+// 2. Configurar máscara do WhatsApp
+document.getElementById('whatsapp').addEventListener('input', function(e) {
+    let valor = e.target.value.replace(/\D/g, '');
+    if (valor.length > 11) valor = valor.substring(0, 11);
+    if (valor.length > 10) {
+        valor = valor.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+    }
+    e.target.value = valor;
+});
+
+// 3. Configurar botão de envio
+document.getElementById('btnEnviar').addEventListener('click', async function() {
+    console.log('🎯 Enviando dados...');
+    
+    // Pegar valores
+    const nome = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const whatsapp = document.getElementById('whatsapp').value;
+    
+    // Validação simples
+    if (!nome || !email || !whatsapp) {
+        alert('Preencha todos os campos');
+        return;
+    }
+    
+    // Salvar estado original do botão
+    const botao = this;
+    const textoOriginal = botao.innerHTML;
+    
+    // Mostrar "ENVIANDO..."
+    botao.innerHTML = 'ENVIANDO...';
+    botao.disabled = true;
+    botao.style.opacity = '0.7';
+    
+    try {
+        // Formatar WhatsApp
+        const whatsappNumeros = '+55' + whatsapp.replace(/\D/g, '');
+        
+        // ENVIAR PARA SUPABASE
+        const resultado = await supabaseClient
+            .from('contatos')
+            .insert([{
+                nome: nome,
+                email: email,
+                whatsapp: whatsappNumeros
+            }]);
+        
+        console.log('📤 Resultado:', resultado);
+        
+        // Verificar erro
+        if (resultado.error) {
+            // Se for erro de email duplicado, mostrar sucesso mesmo assim
+            if (resultado.error.code === '23505') {
+                console.log('⚠️ Email já cadastrado - mostrando sucesso');
+                mostrarSucesso(botao);
+                limparFormulario();
+                return;
+            }
+            throw resultado.error;
+        }
+        
+        // SUCESSO!
+        console.log('✅ Dados enviados com sucesso!');
+        mostrarSucesso(botao);
+        limparFormulario();
+        
+    } catch (erro) {
+        console.error('❌ Erro:', erro);
+        alert('Erro: ' + erro.message);
+        
+        // Restaurar botão
+        botao.innerHTML = textoOriginal;
+        botao.disabled = false;
+        botao.style.opacity = '1';
+    }
+});
+
+// 4. Função para mostrar sucesso (botão VERDE)
+function mostrarSucesso(botao) {
+    // Mudar para VERDE com "ENVIADO COM SUCESSO!"
+    botao.innerHTML = 'ENVIADO COM SUCESSO! <img src="images/seta.svg" alt="Seta" class="btn-icon">';
+    botao.style.background = '#4CAF50';
+    botao.style.backgroundImage = 'none';
+    botao.style.borderColor = '#45a049';
+    botao.style.color = 'white';
+    botao.style.opacity = '1';
+    
+    // Criar mensagem flutuante
+    const mensagem = document.createElement('div');
+    mensagem.textContent = '✅ Cadastro realizado!';
+    mensagem.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4CAF50;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 5px;
+        z-index: 9999;
+        font-family: sans-serif;
+        font-weight: bold;
+    `;
+    document.body.appendChild(mensagem);
+    
+    // Remover mensagem após 3 segundos
+    setTimeout(() => {
+        mensagem.remove();
+    }, 3000);
+    
+    // Restaurar botão após 5 segundos
+    setTimeout(() => {
+        botao.innerHTML = 'QUERO PARTICIPAR <img src="images/seta.svg" alt="Seta" class="btn-icon">';
+        botao.style.background = '';
+        botao.style.backgroundImage = '';
+        botao.style.borderColor = '';
+        botao.style.color = '';
+        botao.disabled = false;
+    }, 5000);
+}
+
+// 5. Limpar formulário
+function limparFormulario() {
+    document.getElementById('name').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('whatsapp').value = '';
+}
+
+// 6. Teste no console
+window.testeFormulario = function() {
+    // Preencher formulário com dados de teste
+    document.getElementById('name').value = 'João Silva';
+    document.getElementById('email').value = 'teste' + Date.now() + '@teste.com';
+    document.getElementById('whatsapp').value = '(11) 99999-9999';
+    
+    // Clicar no botão
+    document.getElementById('btnEnviar').click();
+};
+</script>
+<section class="section-about">
+    <div class="divider-container">
+        <div class="divider-line"></div>
+        <div class="arrow-only">
+            <img src="images/seta2.svg" alt="Seta" class="arrow-img-file">
+        </div>
+    </div>
+
+    <div class="container-about">
+        <h2 class="about-title">O que é a Central<br/>da Menopausa</h2>
+        <p class="about-text">
+            A Central da Menopausa é um espaço seguro<br/>
+            de acolhimento, orientação e apoio contínuo<br/>
+            para mulheres na perimenopausa e menopausa.
+        </p>
+    </div>
+</section>
+<div class="divider-s4-s5"></div>
+
+<section class="section-benefits">
+    <div class="container-benefits">
+        <h2 class="benefits-title">
+            Um espaço criado para mulheres na<br>
+            <strong>perimenopausa e menopausa</strong> que querem:
+        </h2>
+
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="card-number-wrapper">
+                    <div class="outer-ring"></div>
+                    <div class="inner-circle">1</div>
+                </div>
+                <p class="card-text">Entender o que está acontecendo com seu corpo</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="card-number-wrapper">
+                    <div class="outer-ring"></div>
+                    <div class="inner-circle">2</div>
+                </div>
+                <p class="card-text">Aprenda a lidar melhor com os sintomas</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="card-number-wrapper">
+                    <div class="outer-ring"></div>
+                    <div class="inner-circle">3</div>
+                </div>
+                <p class="card-text">Sentir-se acolhidas, escutadas e respeitadas</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="card-number-wrapper">
+                    <div class="outer-ring"></div>
+                    <div class="inner-circle">4</div>
+                </div>
+                <p class="card-text">Recuperar equilíbrio emocional, energia e vontade de viver</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-6">
+    <div class="container-s6">
+        <h2 class="s6-title">Aqui, você encontra:</h2>
+        
+        <ul class="s6-list">
+            <li>Encontros ao vivo com a Dra. Su</li>
+            <li>Áudios curtos e acolhedores para o seu dia a dia</li>
+            <li>Orientações claras, sem termos técnicos</li>
+            <li>Espaço seguro com outras mulheres que vivem a mesma fase</li>
+            <li>Plantão de dúvidas</li>
+            <li>Conteúdos leves para melhorar seu bem-estar</li>
+            <li>Bônus mensais (receitas, materiais de apoio, convidados)</li>
+        </ul>
+
+        <div class="s6-commitment">
+            <p>💗 Meu compromisso é simples:<br>Você nunca mais vai se sentir sozinha nessa fase da vida.</p>
+        </div>
+
+        <div class="s6-btn-wrapper">
+            <a href="#" class="s6-button">
+                QUERO PARTICIPAR
+                <img src="images/seta.svg" alt="Seta" class="s6-btn-icon">
+            </a>
+        </div>
+    </div>
+</section>
+<section class="s7-target-audience">
+    <div class="s7-top-divider"></div>
+
+    <div class="s7-container">
+        <h2 class="s7-title">
+            <span class="s7-emoji">✅</span>
+            <span class="s7-text">Para quem é</span>
+        </h2>
+
+        <div class="s7-info-wrapper">
+            <div class="s7-info-box">
+                <img src="images/checkV.svg" alt="Check" class="s7-icon">
+                <span class="s7-info-text">Está na perimenopausa ou menopausa</span>
+            </div>
+            
+            <div class="s7-info-box">
+                <img src="images/checkV.svg" alt="Check" class="s7-icon">
+                <span class="s7-info-text">Sente sintomas físicos e emocionais</span>
+            </div>
+
+            <div class="s7-info-box">
+                <img src="images/checkV.svg" alt="Check" class="s7-icon">
+                <span class="s7-info-text">Quer entender seu corpo</span>
+            </div>
+
+            <div class="s7-info-box">
+                <img src="images/checkV.svg" alt="Check" class="s7-icon">
+                <span class="s7-info-text">Busca acolhimento e orientação contínua</span>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="s8-not-for-you">
+    <div class="s8-top-divider"></div>
+
+    <div class="s8-container">
+        <h2 class="s8-title">
+            <span class="s8-emoji">❌</span>
+            <span class="s8-text">Não é para você se:</span>
+        </h2>
+
+        <div class="s8-info-wrapper">
+            <div class="s8-info-box">
+                <img src="images/checkX.svg" alt="X" class="s8-icon">
+                <span class="s8-info-text">Procura solução milagrosa</span>
+            </div>
+            
+            <div class="s8-info-box">
+                <img src="images/checkX.svg" alt="X" class="s8-icon">
+                <span class="s8-info-text">Acredita que mulher deve “aguentar calada”</span>
+            </div>
+
+            <div class="s8-info-box">
+                <img src="images/checkX.svg" alt="X" class="s8-icon">
+                <span class="s8-info-text">Não está aberta a se cuidar</span>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="s9-biography">
+    <div class="s9-container">
+        <h2 class="s9-title">Quem vai caminhar com você</h2>
+        
+        <div class="s9-content">
+            <div class="s9-text-col">
+                <p class="s9-description">
+                    <span class="w-400">Dra. Su</span><br/>
+                    <span class="w-400">Médica, formada em Medicina no Brasil, com graduação em </span>
+                    <span class="w-600">Microbiologia pela</span> 
+                    <span class="w-700"> Universidade de Miami.</span><br/><br/>
+                    
+                    <span class="w-400">Morei </span><span class="w-700">7 anos nos Estados Unidos,</span> 
+                    <span class="w-400"> sou pós-graduada em </span><span class="w-700">Saúde da Mulher,</span> 
+                    <span class="w-400"> membro da </span><span class="w-700">Sociedade Americana de Menopausa</span> 
+                    <span class="w-400"> e </span><span class="w-700">médica certificada pela The Menopause Society (EUA),</span> 
+                    <span class="w-400">reconhecimento internacional em saúde da mulher na menopausa.</span><br/><br/>
+                    
+                    <span class="w-400">Mas antes de tudo, sou mulher. Estou na perimenopausa. Sinto na pele o que você sente. A Central nasceu porque eu vi mulheres perdidas, sofrendo que perderam a vontade de viver e isso não pode ser normalizado.</span>
+                </p>
+                
+                <div class="s9-btn-wrapper desktop-only">
+                    <a href="#" class="s9-button">
+                        QUERO PARTICIPAR
+                        <img src="images/seta.svg" alt="Seta" class="s9-btn-icon">
+                    </a>
+                </div>
+            </div>
+
+            <div class="s9-image-col">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="images/sec9mobile.png">
+                    <img src="images/sec9dsk.png" alt="Dra. Su" class="s9-img">
+                </picture>
+            </div>
+            
+            <div class="s9-btn-wrapper mobile-only">
+                <a href="#" class="s9-button">
+                    QUERO PARTICIPAR
+                    <img src="images/seta.svg" alt="Seta" class="s9-btn-icon">
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="s10-access">
+    <div class="s10-divider"></div>
+
+    <div class="s10-container">
+        <h2 class="s10-title">Como acessar a Central da Menopausa</h2>
+        <h3 class="s10-subtitle">Um cuidado contínuo, mês após mês,<br/>enquanto você precisar.</h3>
+
+        <div class="s10-pricing-card">
+            <p class="s10-plan-name">Assinatura Mensal:</p>
+            
+            <div class="s10-price-wrapper">
+                <span class="s10-currency">R$</span>
+                <span class="s10-price-number">29</span>
+                <div class="s10-price-details">
+                    <span class="s10-cents">,00</span>
+                    <span class="s10-period">/mês</span>
+                </div>
+            </div>
+
+            <div class="s10-trust-icons">
+                <div class="s10-trust-item">
+                    <img src="images/comprasegura.svg" alt="Compra segura">
+                    <span>Compra segura</span>
+                </div>
+                <div class="s10-trust-item">
+                    <img src="images/privacidadeprotegida.svg" alt="Privacidade Protegida">
+                    <span>Privacidade<br>Protegida</span>
+                </div>
+                <div class="s10-trust-item">
+                    <img src="images/satisfacaogarantia.svg" alt="Satisfação Garantida">
+                    <span>Satisfação<br>Garantida</span>
+                </div>
+            </div>
+
+            <ul class="s10-features">
+                <li>Acesso contínuo</li>
+                <li>Sem fidelidade</li>
+                <li>Cancele quando quiser</li>
+                <li>Pagamento por Pix, cartão ou boleto</li>
+                <li>Suporte humanizado via WhatsApp e e-mail</li>
+            </ul>
+
+            <div class="s10-note-box">
+                <p>Você permanece enquanto fizer<br>sentido para você.</p>
+            </div>
+
+            <a href="#" class="s10-btn">
+                QUERO PARTICIPAR
+                <img src="images/seta.svg" alt="Seta" class="s10-btn-icon">
+            </a>
+        </div>
+    </div>
+</section>
+<section class="s11-faq">
+    <div class="s11-divider"></div>
+
+    <div class="s11-container">
+        <h2 class="s11-title">Perguntas Frequentes</h2>
+
+        <div class="s11-faq-wrapper">
+            <details class="s11-faq-item">
+                <summary class="s11-faq-question">
+                    Isso substitui consulta médica?
+                    <img src="images/setafaq.svg" alt="Seta" class="s11-faq-icon">
+                </summary>
+                <div class="s11-faq-answer">
+                    <p>Não. A Central é um espaço de apoio, orientação e acolhimento contínuo. Ela complementa o cuidado médico.</p>
+                </div>
+            </details>
+
+            <details class="s11-faq-item">
+                <summary class="s11-faq-question">
+                    Preciso participar de tudo ao vivo?
+                    <img src="images/setafaq.svg" alt="Seta" class="s11-faq-icon">
+                </summary>
+                <div class="s11-faq-answer">
+                    <p>Não. Você acessa as gravações no seu ritmo.</p>
+                </div>
+            </details>
+
+            <details class="s11-faq-item">
+                <summary class="s11-faq-question">
+                    É só para quem já está na menopausa?
+                    <img src="images/setafaq.svg" alt="Seta" class="s11-faq-icon">
+                </summary>
+                <div class="s11-faq-answer">
+                    <p>É para mulheres na perimenopausa e menopausa, inclusive no início dos sintomas.</p>
+                </div>
+            </details>
+
+            <details class="s11-faq-item">
+                <summary class="s11-faq-question">
+                    Funciona se eu estiver começando agora?
+                    <img src="images/setafaq.svg" alt="Seta" class="s11-faq-icon">
+                </summary>
+                <div class="s11-faq-answer">
+                    <p>Sim. Quanto antes entender seu corpo, melhor será passar por essa fase.</p>
+                </div>
+            </details>
+
+            <details class="s11-faq-item">
+                <summary class="s11-faq-question">
+                    Posso cancelar quando quiser?
+                    <img src="images/setafaq.svg" alt="Seta" class="s11-faq-icon">
+                </summary>
+                <div class="s11-faq-answer">
+                    <p>Sim. Sem fidelidade. Você cancela quando quiser.</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+    <!-- Carrega nosso script.js -->
+    <script src="script.js"></script>
+</body>
+</html>
