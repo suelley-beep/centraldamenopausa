@@ -1,3 +1,11 @@
 {
-  "cleanUrls": true
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "^/links/?$",
+      "dest": "/links/index.html"
+    }
+  ]
 }
