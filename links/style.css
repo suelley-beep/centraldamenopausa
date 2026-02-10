@@ -124,3 +124,39 @@ body {
 .pulse {
     animation: softPulse 3s infinite ease-in-out;
 }
+/* Card 3 - Correção para ficar na coluna e idêntico à imagem */
+.card-mediterraneo-final {
+    width: 242px;
+    height: 76px;
+    background: #BCB3A3; 
+    border-radius: 5px;
+    border: 1px #B28739 solid;
+    position: relative; /* Mantém o card no fluxo do links-wrapper */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 10px; /* Ajuste o espaçamento entre o 2º e o 3º aqui */
+}
+
+.icon-book-left-final {
+    width: 152px; 
+    height: 99px; 
+    position: absolute;
+    left: -25px; /* Ajuste fino para a esquerda */
+    bottom: -1px; /* Ajuste para encostar na base como na foto */
+    z-index: 10;
+}
+
+.text-mediterraneo-final {
+    color: #421A25;
+    font-size: 12.43px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    line-height: 11.81px;
+    text-align: right;
+    padding-right: 15px;
+    word-wrap: break-word;
+}
+
+.weight-600 { font-weight: 600; }
+.weight-700 { font-weight: 700; }
