@@ -17,7 +17,7 @@ body {
 
 .container {
     width: 100%;
-    max-width: 430px; /* Largura padrão mobile */
+    max-width: 430px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -29,13 +29,13 @@ body {
     display: block;
 }
 
-/* Container dos Botões */
+/* Container dos Botões - Mantém um embaixo do outro */
 .links-wrapper {
     position: absolute;
-    top: 55%; /* Ajuste conforme a altura da foto no fundo */
+    top: 55%; 
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 25px; /* Espaço uniforme entre os botões */
     align-items: center;
 }
 
@@ -44,7 +44,13 @@ body {
     display: block;
 }
 
-/* Estilo Card 1 - WhatsApp */
+/* Pesos de fonte específicos do Figma */
+.weight-400 { font-weight: 400 !important; }
+.weight-600 { font-weight: 600 !important; }
+.weight-700 { font-weight: 700 !important; }
+.weight-800 { font-weight: 800 !important; }
+
+/* --- CARD 1: WHATSAPP --- */
 .card-whatsapp {
     width: 242px;
     height: 76px;
@@ -74,7 +80,7 @@ body {
     text-align: right;
 }
 
-/* Estilo Card 2 - Ebook */
+/* --- CARD 2: E-BOOK 9 RECEITAS --- */
 .card-ebook {
     width: 242px;
     height: 76px;
@@ -85,27 +91,21 @@ body {
     display: flex;
     align-items: center;
     padding-left: 16px;
-    margin-top: 20px; /* Espaço para o livro que sobe */
 }
 
 .text-ebook {
     color: #421A25;
-    font-size: 16.14px;
-    font-weight: 600;
-    line-height: 16px;
+    font-size: 14.78px;
+    line-height: 14.66px;
     text-align: left;
-}
-
-.text-ebook strong {
-    font-weight: 800;
 }
 
 .book-container {
     width: 109px;
     height: 105px;
     position: absolute;
-    right: 0px;
-    top: -30px; /* Faz o livro ficar "saindo" para cima */
+    right: -5px;
+    top: -30px;
 }
 
 .icon-book {
@@ -114,7 +114,38 @@ body {
     object-fit: contain;
 }
 
-/* Animação de Pulso Suave */
+/* --- CARD 3: E-BOOK 28 RECEITAS (MEDITERRÂNEA) --- */
+.card-mediterraneo-final {
+    width: 242px;
+    height: 76px;
+    background: #BCB3A3; 
+    border-radius: 5px;
+    border: 1px #B28739 solid;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinha o bloco de texto à direita */
+}
+
+.icon-book-left-final {
+    width: 78px; 
+    height: 91px; 
+    position: absolute;
+    left: 10px; /* Posição exata do livro na esquerda */
+    top: -15px;
+    z-index: 10;
+}
+
+.text-mediterraneo-final {
+    color: #421A25;
+    font-size: 14.78px;
+    line-height: 14.66px;
+    text-align: left;
+    padding-right: 12px;
+    width: 155px; /* Limita a largura para a frase quebrar igual ao print */
+}
+
+/* Animação */
 @keyframes softPulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.03); }
@@ -124,39 +155,3 @@ body {
 .pulse {
     animation: softPulse 3s infinite ease-in-out;
 }
-/* Card 3 - Correção para ficar na coluna e idêntico à imagem */
-.card-mediterraneo-final {
-    width: 242px;
-    height: 76px;
-    background: #BCB3A3; 
-    border-radius: 5px;
-    border: 1px #B28739 solid;
-    position: relative; /* Mantém o card no fluxo do links-wrapper */
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-top: 10px; /* Ajuste o espaçamento entre o 2º e o 3º aqui */
-}
-
-.icon-book-left-final {
-    width: 152px; 
-    height: 99px; 
-    position: absolute;
-    left: -25px; /* Ajuste fino para a esquerda */
-    bottom: -1px; /* Ajuste para encostar na base como na foto */
-    z-index: 10;
-}
-
-.text-mediterraneo-final {
-    color: #421A25;
-    font-size: 12.43px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    line-height: 11.81px;
-    text-align: right;
-    padding-right: 15px;
-    word-wrap: break-word;
-}
-
-.weight-600 { font-weight: 600; }
-.weight-700 { font-weight: 700; }
