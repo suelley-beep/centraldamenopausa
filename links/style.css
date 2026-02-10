@@ -15,6 +15,12 @@ body {
     overflow-x: hidden;
 }
 
+/* Melhora a nitidez das imagens no Safari */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
 .container {
     width: 100%;
     max-width: 430px;
@@ -29,13 +35,13 @@ body {
     display: block;
 }
 
-/* Container dos Botões - Mantém um embaixo do outro */
+/* Container dos Botões - Um embaixo do outro */
 .links-wrapper {
     position: absolute;
     top: 55%; 
     display: flex;
     flex-direction: column;
-    gap: 25px; /* Espaço uniforme entre os botões */
+    gap: 30px; 
     align-items: center;
 }
 
@@ -44,13 +50,12 @@ body {
     display: block;
 }
 
-/* Pesos de fonte específicos do Figma */
+/* Pesos de fonte do Figma */
 .weight-400 { font-weight: 400 !important; }
 .weight-600 { font-weight: 600 !important; }
 .weight-700 { font-weight: 700 !important; }
-.weight-800 { font-weight: 800 !important; }
 
-/* --- CARD 1: WHATSAPP --- */
+/* --- WHATSAPP --- */
 .card-whatsapp {
     width: 242px;
     height: 76px;
@@ -80,7 +85,7 @@ body {
     text-align: right;
 }
 
-/* --- CARD 2: E-BOOK 9 RECEITAS --- */
+/* --- E-BOOK 9 RECEITAS --- */
 .card-ebook {
     width: 242px;
     height: 76px;
@@ -104,7 +109,7 @@ body {
     width: 109px;
     height: 105px;
     position: absolute;
-    right: -5px;
+    right: -8px;
     top: -30px;
 }
 
@@ -114,7 +119,7 @@ body {
     object-fit: contain;
 }
 
-/* --- CARD 3: E-BOOK 28 RECEITAS (MEDITERRÂNEA) --- */
+/* --- E-BOOK 28 RECEITAS (Mediterrânea) --- */
 .card-mediterraneo-final {
     width: 242px;
     height: 76px;
@@ -124,14 +129,14 @@ body {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* Alinha o bloco de texto à direita */
+    justify-content: flex-end;
 }
 
 .icon-book-left-final {
     width: 78px; 
     height: 91px; 
     position: absolute;
-    left: 10px; /* Posição exata do livro na esquerda */
+    left: 8px;
     top: -15px;
     z-index: 10;
 }
@@ -142,7 +147,7 @@ body {
     line-height: 14.66px;
     text-align: left;
     padding-right: 12px;
-    width: 155px; /* Limita a largura para a frase quebrar igual ao print */
+    width: 158px; /* Mantém a quebra de linha igual ao Figma */
 }
 
 /* Animação */
