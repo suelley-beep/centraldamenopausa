@@ -11,105 +11,93 @@ body {
     overflow-x: hidden;
 }
 
-/* --- SEÇÃO 1 (DESKTOP) --- */
-.section-hero {
+/* =========================================== */
+/* SEÇÃO 1 - HERO VSL                          */
+/* =========================================== */
+
+.hero-vsl-unified {
     width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
     background-image: url('images/fotobg.png');
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    padding: 60px 20px;
-}
-
-.hero-title {
-    color: #421A25;
-    font-size: 65.70px;
-    line-height: 78.18px;
-}
-
-.w-400 { font-weight: 400; }
-.w-500 { font-weight: 500; }
-.w-700 { font-weight: 700; }
-
-.hero-divider-small {
-    width: 60px;
-    height: 1px;
-    background: #BCB3A3;
-    margin: 25px auto;
-}
-
-.hero-description {
-    color: #421A25;
-    font-size: 31.89px;
-    line-height: 37.94px;
-}
-
-/* --- DIVISÓRIA CURVADA --- */
-.main-divider-container {
-    width: 100%;
-    background-color: #D5CDC2;
-    display: flex;
-    justify-content: center;
-}
-
-.curved-line {
-    width: 100%;
-    height: 1px;
-    background: #421A25;
-    border-radius: 50% / 100%;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    opacity: 0.4;
-}
-
-/* --- SEÇÃO 2 (DESKTOP) --- */
-.section-vsl {
-    width: 100%;
+    background-position: center top;
+    padding: 120px 20px 80px;
     text-align: center;
-    padding-top: 100px;    
-    padding-bottom: 80px; 
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.vsl-title {
     color: #421A25;
-    font-size: 40.24px;
-    font-weight: 600;
-    line-height: 47.89px;
-    margin-bottom: 40px;
 }
 
-.video-wrapper {
+.main-title {
+    font-size: 65.70px;
+    line-height: 1.1;
+    margin-bottom: 25px;
+    color: #421A25 !important;
+}
+
+.main-description {
+    font-size: 31.89px;
+    line-height: 1.4;
+    max-width: 950px;
+    margin: 30px auto 50px;
+    color: #421A25 !important;
+}
+
+.divider-sm { width: 133.94px; height: 6px; background: #BCB3A3; margin: 0 auto; }
+
+/* Divisória do Vídeo - Desktop */
+.divider-vsl-custom { 
+    width: 340px; 
+    height: 4px; 
+    background: #BCB3A3;
+    border-radius: 9999px; 
+    margin: 15px auto 25px; 
+}
+
+.video-call {
+    font-size: 24px;
+    margin-top: 40px;
+    font-weight: 500;
+}
+
+.video-container {
     width: 100%;
-    max-width: 750px; 
+    max-width: 821px;
+    aspect-ratio: 16 / 9;
     margin: 0 auto;
-    position: relative;
-    padding-bottom: 38.18%;
-    height: 0;
-    border-radius: 20px;
-    overflow: hidden;
     background: #000;
+    border-radius: 33px;
+    border: 2px solid #FF5E00;
+    box-shadow: 0 0 0 1px #FFAE0F;
+    position: relative;
+    overflow: hidden;
 }
 
-/* No mobile, voltamos para a proporção padrão 16:9 */
-@media (max-width: 768px) {
-    .video-wrapper {
-        padding-bottom: 56.25%;
-    }
-}
-
-.video-wrapper iframe {
+/* Isso aqui faz o vídeo ficar nas dimensões certas */
+.video-container iframe {
     position: absolute;
-    top: 0; 
+    top: 0;
     left: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
+}
+
+/* --- AJUSTE MOBILE SEÇÃO 1 --- */
+@media (max-width: 768px) {
+    .hero-vsl-unified {
+        padding: 100px 15px 50px !important; 
+    }
+
+    .main-title { font-size: 32px !important; }
+    .main-description { font-size: 16px !important; }
+
+    .video-call { font-size: 18px !important; }
+
+    /* Divisória menor que a frase no Mobile */
+    .divider-vsl-custom { 
+        width: 100px !important; 
+        height: 3px !important;
+        margin: 10px auto 25px !important;
+    }
+
+    .video-container { border-radius: 15px; }
 }
 
 /* --- SEÇÃO 3 (DESKTOP) --- */
@@ -122,13 +110,13 @@ body {
     justify-content: center;
     align-items: center;
 }
-
 .container-cta {
     width: 100%;
     max-width: 900px; 
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* ALTERADO: Para empilhar título e form */
+    justify-content: center; /* ALTERADO: Para centralizar no meio */
+    align-items: center;    /* ALTERADO: Para alinhar horizontalmente */
     gap: 40px;
 }
 
@@ -138,7 +126,7 @@ body {
     font-size: 34.98px;
     font-weight: 600;
     line-height: 41.63px;
-    text-align: left;
+    text-align: center; /* ALTERADO: Para o texto ficar no meio */
 }
 
 .cta-form-box {
@@ -711,7 +699,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 272.32px;
+    width: 372.32px;
     height: 52px;
     background: linear-gradient(90deg, #B28739 0%, #F5D9A8 100%);
     border-radius: 12.32px;
@@ -1115,7 +1103,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 272.32px;
+    width: 372.32px;
     height: 52px;
     background: linear-gradient(90deg, #B28739 0%, #F5D9A8 100%);
     border-radius: 12.32px;
