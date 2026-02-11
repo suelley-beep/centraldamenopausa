@@ -12,7 +12,7 @@ body {
 }
 
 /* =========================================== */
-/* SEÇÃO 1 - HERO VSL                          */
+/* SEÇÃO UNIFICADA - VERSÃO FINAL SEM BURACOS  */
 /* =========================================== */
 
 .hero-vsl-unified {
@@ -20,86 +20,112 @@ body {
     background-image: url('images/fotobg.png');
     background-size: cover;
     background-position: center top;
-    padding: 120px 20px 80px;
+    padding: 100px 20px 60px; /* Reduzi um pouco o respiro geral */
     text-align: center;
-    color: #421A25;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .main-title {
     font-size: 65.70px;
     line-height: 1.1;
-    margin-bottom: 25px;
-    color: #421A25 !important;
+    margin-bottom: 20px;
+    color: #421A25;
+}
+
+.divider-sm { 
+    width: 133.94px; 
+    height: 6px; 
+    background: #BCB3A3; 
+    margin: 0 auto 20px; 
 }
 
 .main-description {
     font-size: 31.89px;
     line-height: 1.4;
     max-width: 950px;
-    margin: 30px auto 50px;
-    color: #421A25 !important;
+    margin: 0 auto 30px; /* Reduzi a margem inferior */
+    color: #421A25;
 }
 
-.divider-sm { width: 133.94px; height: 6px; background: #BCB3A3; margin: 0 auto; }
+.vsl-title {
+    font-size: 40.24px;
+    font-weight: 600;
+    color: #421A25;
+    margin-bottom: 15px; /* Título colado na divisória do vídeo */
+}
 
-/* Divisória do Vídeo - Desktop */
 .divider-vsl-custom { 
     width: 340px; 
     height: 4px; 
     background: #BCB3A3;
     border-radius: 9999px; 
-    margin: 15px auto 25px; 
+    margin: 0 auto 25px; 
 }
 
-.video-call {
-    font-size: 24px;
-    margin-top: 40px;
-    font-weight: 500;
-}
-
+/* CONTAINER DO VÍDEO */
 .video-container {
     width: 100%;
     max-width: 821px;
-    aspect-ratio: 16 / 9;
     margin: 0 auto;
     background: #000;
     border-radius: 33px;
     border: 2px solid #FF5E00;
     box-shadow: 0 0 0 1px #FFAE0F;
     position: relative;
+    height: 0;
+    padding-bottom: 38.18%; /* Sua proporção desktop */
     overflow: hidden;
 }
 
-/* Isso aqui faz o vídeo ficar nas dimensões certas */
 .video-container iframe {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border: none;
 }
 
-/* --- AJUSTE MOBILE SEÇÃO 1 --- */
+/* --- AJUSTE MOBILE (O FOCO DA SUA RECLAMAÇÃO) --- */
 @media (max-width: 768px) {
     .hero-vsl-unified {
-        padding: 100px 15px 50px !important; 
+        /* Reduzi drasticamente o padding para subir o conteúdo */
+        padding: 50px 15px 30px !important; 
+        background-image: url('images/fotobgmb.png') !important;
     }
 
-    .main-title { font-size: 32px !important; }
-    .main-description { font-size: 16px !important; }
+    .main-title { 
+        font-size: 28px !important; /* Tamanho mobile real */
+        margin-bottom: 15px !important;
+    }
 
-    .video-call { font-size: 18px !important; }
+    .divider-sm { 
+        width: 80px !important; 
+        height: 4px !important;
+        margin-bottom: 15px !important;
+    }
 
-    /* Divisória menor que a frase no Mobile */
+    .main-description { 
+        font-size: 15px !important; 
+        line-height: 1.3;
+        margin-bottom: 25px !important;
+    }
+
+    .vsl-title { 
+        font-size: 18px !important; 
+        margin-bottom: 10px !important;
+        margin-top: 0 !important; /* Tira o espaço de cima do "Assista" */
+    }
+
     .divider-vsl-custom { 
-        width: 100px !important; 
-        height: 3px !important;
-        margin: 10px auto 25px !important;
+        width: 120px !important; 
+        margin-bottom: 20px !important;
     }
 
-    .video-container { border-radius: 15px; }
+    .video-container { 
+        border-radius: 15px;
+        padding-bottom: 56.25% !important; /* Proporção 16:9 no mobile */
+    }
 }
-
 /* --- SEÇÃO 3 (DESKTOP) --- */
 .section-cta {
     width: 100%;
@@ -382,17 +408,18 @@ body {
         opacity: 0;
     }
 }
-/* Configurações da Seção - Subindo todo o conteúdo */
-.section-about {
-    background-color: #E2E1DD;
-    padding: 90px 20px 100px 20px; /* Reduzido o topo de 100px para 40px */
+
+/* --- SEÇÃO 5 - BENEFÍCIOS COM DIVISÓRIA E SETA --- */
+.section-benefits {
+    background-color: #D4CDC1;
+    padding: 80px 20px 60px; /* AJUSTADO: mais padding-top para o título aparecer */
     text-align: center;
     position: relative;
     width: 100%;
 }
 
-/* Divisória e Seta */
-.divider-container {
+/* DIVISÓRIA E SETA - IGUALZINHA À QUE ESTAVA NA SEÇÃO 4 */
+.section-benefits .divider-container {
     position: absolute;
     top: 0;
     left: 0;
@@ -402,84 +429,38 @@ body {
     align-items: center;
 }
 
-.divider-line {
+.section-benefits .divider-line {
     width: 100%;
     height: 4px;
     background-color: #CBC0AE;
 }
 
-.arrow-only {
+.section-benefits .arrow-only {
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
-    top: -28px; 
+    top: -28px;
 }
 
-.arrow-img-file {
+.section-benefits .arrow-img-file {
     width: 56px;
     height: auto;
 }
 
-/* Título Desktop - Subindo a posição */
-.about-title {
+/* TÍTULO "O que é a Central da Menopausa" - GRANDÃO DESKTOP */
+.section-benefits .about-title {
     color: #421A25;
     font-size: 59.42px;
     font-family: 'Acumin Pro', sans-serif;
     font-weight: 700;
     line-height: 1.1;
-    margin-top: 20px; /* Reduzido para subir o título em direção à seta */
-    margin-bottom: 50px; /* Mantém o texto afastado do título conforme solicitado */
+    margin-top: 40px; /* AJUSTADO: mais espaço para não ficar coberto pela seta */
+    margin-bottom: 50px;
 }
 
-.about-text {
-    color: #421A25;
-    font-size: 28.84px;
-    font-family: 'Acumin Pro', sans-serif;
-    font-weight: 400;
-    line-height: 1.3;
-    max-width: 950px;
-    margin: 0 auto;
-}
-
-/* Ajustes Mobile */
-@media (max-width: 768px) {
-    .section-about {
-        padding: 30px 15px 60px 15px; /* Mais compacto no mobile */
-    }
-
-    .arrow-only {
-        top: -16px;
-    }
-
-    .arrow-img-file {
-        width: 32px;
-    }
-
-    .about-title {
-        font-size: 28px; /* Padrão das suas outras seções */
-        margin-top: 15px;
-        margin-bottom: 25px;
-    }
-
-    .about-text {
-        font-size: 16px; /* Padrão das suas outras seções */
-    }
-}
-/* Divisória e Seção */
-.divider-s4-s5 {
-    width: 100%;
-    height: 4px;
-    background-color: #421A25;
-}
-
-.section-benefits {
-    background-color: #D4CDC1;
-    padding: 60px 20px;
-    text-align: center;
-}
-
-.benefits-title {
+/* TÍTULO DOS BENEFÍCIOS - MENOR */
+.section-benefits .benefits-title {
     color: #421A25;
     font-family: 'Acumin Pro', sans-serif;
     font-size: 50.18px;
@@ -488,17 +469,21 @@ body {
     margin-bottom: 50px;
 }
 
-.benefits-title strong { font-weight: 600; }
+.section-benefits .benefits-title strong {
+    font-weight: 600;
+}
 
-/* Grid Desktop (Permanece igual) */
-.benefits-grid {
+/* GRID DE BENEFÍCIOS DESKTOP */
+.section-benefits .benefits-grid {
     display: grid;
     grid-template-columns: repeat(4, 218px);
     justify-content: center;
     gap: 20px;
+    margin: 0 auto;
 }
 
-.benefit-card {
+/* CARDS */
+.section-benefits .benefit-card {
     background-color: #421A25;
     border: 0.82px solid #B28739;
     border-radius: 12.28px;
@@ -511,8 +496,8 @@ body {
     padding: 20px;
 }
 
-/* Números Desktop */
-.card-number-wrapper {
+/* NÚMEROS DOS CARDS */
+.section-benefits .card-number-wrapper {
     position: relative;
     width: 65px;
     height: 65px;
@@ -522,7 +507,7 @@ body {
     margin-bottom: 15px;
 }
 
-.outer-ring {
+.section-benefits .outer-ring {
     position: absolute;
     width: 64px;
     height: 64px;
@@ -530,7 +515,7 @@ body {
     border-radius: 50%;
 }
 
-.inner-circle {
+.section-benefits .inner-circle {
     width: 48px;
     height: 48px;
     background: linear-gradient(90deg, #B28739 0%, #F5D9A8 100%);
@@ -543,61 +528,100 @@ body {
     font-weight: 600;
 }
 
-.card-text {
+/* TEXTO DOS CARDS */
+.section-benefits .card-text {
     color: white;
     font-size: 20px;
     line-height: 1.1;
     text-align: center;
 }
 
-/* --- AJUSTE MOBILE: CARTÕES MAIORES --- */
+/* ========== VERSÃO MOBILE ========== */
 @media (max-width: 768px) {
     .section-benefits {
         padding: 50px 10px;
+        position: relative;
     }
 
-    .benefits-title {
+    /* AJUSTES DA SETA MOBILE */
+    .section-benefits .arrow-only {
+        top: -16px;
+    }
+
+    .section-benefits .arrow-img-file {
+        width: 32px;
+    }
+
+    /* TÍTULO MOBILE - 28px */
+    .section-benefits .about-title {
+        font-size: 28px;
+        margin-top: 30px;
+        margin-bottom: 25px;
+    }
+
+    /* TÍTULO DOS BENEFÍCIOS MOBILE - 16.38px */
+    .section-benefits .benefits-title {
         font-size: 16.38px;
         line-height: 1.2;
         margin-bottom: 40px;
     }
 
-    /* Grid aumentado para preencher melhor a tela lateralmente */
-    .benefits-grid {
-        grid-template-columns: repeat(2, 140px); /* Aumentado de 65px para 140px */
+    /* GRID MOBILE - 2 COLUNAS */
+    .section-benefits .benefits-grid {
+        grid-template-columns: repeat(2, 140px);
         justify-content: center;
-        gap: 15px; /* Espaçamento maior entre os blocos */
+        gap: 15px;
     }
 
-    .benefit-card {
-        width: 140px; /* Largura maior */
-        height: 130px; /* Altura maior */
-        border-radius: 8px; /* Borda levemente mais arredondada pela escala */
+    /* CARDS MOBILE */
+    .section-benefits .benefit-card {
+        width: 140px;
+        height: 130px;
+        border-radius: 8px;
         border-width: 0.5px;
         padding: 10px;
     }
 
-    .card-number-wrapper {
-        width: 40px; /* Círculo do número maior */
+    /* NÚMEROS MOBILE */
+    .section-benefits .card-number-wrapper {
+        width: 40px;
         height: 40px;
         margin-bottom: 10px;
     }
 
-    .outer-ring {
+    .section-benefits .outer-ring {
         width: 40px;
         height: 40px;
         border-width: 0.4px;
     }
 
-    .inner-circle {
+    .section-benefits .inner-circle {
         width: 30px;
         height: 30px;
-        font-size: 20px; /* Número mais visível */
+        font-size: 20px;
     }
 
-    .card-text {
-        font-size: 12px; /* Texto maior e mais legível */
+    /* TEXTO DOS CARDS MOBILE */
+    .section-benefits .card-text {
+        font-size: 12px;
         line-height: 1.2;
+    }
+}
+
+/* ========== TABLETS ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .section-benefits .benefits-grid {
+        grid-template-columns: repeat(4, 180px);
+        gap: 15px;
+    }
+    
+    .section-benefits .benefit-card {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .section-benefits .card-text {
+        font-size: 18px;
     }
 }
 /* --- SEÇÃO 6 COMPLETA --- */
@@ -1519,5 +1543,39 @@ body {
 
     .s11-faq-wrapper {
         gap: 15px;
+    }
+}
+/* =========================================== */
+/* RODAPÉ FINAL                                */
+/* =========================================== */
+
+.main-footer {
+    width: 100%;
+    background-color: #E2E1DD; /* Mesma cor de fundo do FAQ para continuidade */
+    padding: 40px 20px 60px;   /* Respiro para não ficar colado no FAQ */
+    text-align: center;
+}
+
+.footer-text {
+    color: black;
+    font-family: "Acumin Pro", sans-serif;
+    font-weight: 500;
+    word-wrap: break-word;
+    
+    /* Configurações Desktop (conforme seu Figma) */
+    font-size: 14.92px;
+    line-height: 17.76px;
+}
+
+/* --- AJUSTE MOBILE --- */
+@media (max-width: 768px) {
+    .main-footer {
+        padding: 30px 15px 40px;
+    }
+
+    .footer-text {
+        /* Configurações Mobile (conforme seu Figma) */
+        font-size: 6.15px;
+        line-height: 7.31px;
     }
 }
