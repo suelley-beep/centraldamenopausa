@@ -63,7 +63,22 @@ body {
     border-radius: 9999px; 
     margin: 0 auto 25px; 
 }
-
+.s0-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 272.32px;
+    height: 52px;
+    background: linear-gradient(90deg, #B28739 0%, #F5D9A8 100%);
+    border-radius: 12.32px;
+    border: 0.68px solid #FFCD74;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 18.33px;
+    font-weight: 500;
+    text-decoration: none;
+    gap: 10px;
+}
 /* CONTAINER DO VÍDEO */
 .video-container {
     width: 100%;
