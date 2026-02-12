@@ -36,48 +36,46 @@
         </div>
     </div>
 </section>
-    <section class="section-cta">
-        <div class="container-cta">
-            <div class="cta-content">
-                <h2 class="cta-title">Preencha o campo abaixo para fazer parte da Comunidade Central da Menopausa
-            </div>
 
-            <div class="cta-form-box">
-                <!-- FORMULÁRIO SIMPLES -->
-                <div>
-                    <div class="input-group">
-                        <label for="name">Nome:</label>
-                        <input type="text" id="name" placeholder="Seu nome completo" required>
-                    </div>
+<section class="section-cta">
+    <div class="container-cta">
+        <div class="cta-content">
+            <h2 class="cta-title">Preencha o campo abaixo para fazer parte da Comunidade Central da Menopausa</h2>
+        </div>
 
-                    <div class="input-group">
-                        <label for="email">E-mail:</label>
-                        <input type="email" id="email" placeholder="Seu@email.com" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="whatsapp">Whatsapp (com DDD)</label>
-                        <input type="text" id="whatsapp" placeholder="(99) 9 9999-9999" required>
-                    </div>
-
-                    <!-- BOTÃO COM ID CORRETO -->
-                    <button type="button" id="btnEnviar" class="btn-submit">
-                        QUERO PARTICIPAR
-                        <img src="images/seta.svg" alt="Seta" class="btn-icon">
-                    </button>
-
-                    <p class="form-footer-text">
-                        Não se preocupe. Se tiver qualquer dúvida, nossa equipe<br>
-                        entrará em contato com você com cuidado e atenção.
-                    </p>
+        <div class="cta-form-box">
+            <div>
+                <div class="input-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" placeholder="Seu nome completo" required>
                 </div>
+
+                <div class="input-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" placeholder="Seu@email.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="whatsapp">Whatsapp (com DDD)</label>
+                    <input type="text" id="whatsapp" placeholder="(99) 9 9999-9999" required>
+                </div>
+
+                <button type="button" id="btnEnviar" class="btn-submit">
+                    QUERO PARTICIPAR
+                    <img src="images/seta.svg" alt="Seta" class="btn-icon">
+                </button>
+
+                <p class="form-footer-text">
+                    Não se preocupe. Se tiver qualquer dúvida, nossa equipe<br>
+                    entrará em contato com você com cuidado e atenção.
+                </p>
             </div>
         </div>
-    </section>
-    <script>
-// CÓDIGO FINAL QUE FUNCIONA 100%
+    </div>
+</section>
 
-// 1. Criar cliente Supabase CORRETAMENTE
+<script>
+// CÓDIGO DO SUPABASE
 const supabaseClient = window.supabase.createClient(
     'https://ellisuzzlwgpmpdjnkdl.supabase.co',
     'sb_publishable_pjsMKzTKT9v7n7yZwvimHg_Rrcjfjuv'
@@ -85,7 +83,6 @@ const supabaseClient = window.supabase.createClient(
 
 console.log('✅ Supabase configurado!');
 
-// 2. Configurar máscara do WhatsApp
 document.getElementById('whatsapp').addEventListener('input', function(e) {
     let valor = e.target.value.replace(/\D/g, '');
     if (valor.length > 11) valor = valor.substring(0, 11);
@@ -95,35 +92,28 @@ document.getElementById('whatsapp').addEventListener('input', function(e) {
     e.target.value = valor;
 });
 
-// 3. Configurar botão de envio
 document.getElementById('btnEnviar').addEventListener('click', async function() {
     console.log('🎯 Enviando dados...');
     
-    // Pegar valores
     const nome = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const whatsapp = document.getElementById('whatsapp').value;
     
-    // Validação simples
     if (!nome || !email || !whatsapp) {
         alert('Preencha todos os campos');
         return;
     }
     
-    // Salvar estado original do botão
     const botao = this;
     const textoOriginal = botao.innerHTML;
     
-    // Mostrar "ENVIANDO..."
     botao.innerHTML = 'ENVIANDO...';
     botao.disabled = true;
     botao.style.opacity = '0.7';
     
     try {
-        // Formatar WhatsApp
         const whatsappNumeros = '+55' + whatsapp.replace(/\D/g, '');
         
-        // ENVIAR PARA SUPABASE
         const resultado = await supabaseClient
             .from('contatos')
             .insert([{
@@ -134,9 +124,7 @@ document.getElementById('btnEnviar').addEventListener('click', async function() 
         
         console.log('📤 Resultado:', resultado);
         
-        // Verificar erro
         if (resultado.error) {
-            // Se for erro de email duplicado, mostrar sucesso mesmo assim
             if (resultado.error.code === '23505') {
                 console.log('⚠️ Email já cadastrado - mostrando sucesso');
                 mostrarSucesso(botao);
@@ -146,7 +134,6 @@ document.getElementById('btnEnviar').addEventListener('click', async function() 
             throw resultado.error;
         }
         
-        // SUCESSO!
         console.log('✅ Dados enviados com sucesso!');
         mostrarSucesso(botao);
         limparFormulario();
@@ -155,16 +142,13 @@ document.getElementById('btnEnviar').addEventListener('click', async function() 
         console.error('❌ Erro:', erro);
         alert('Erro: ' + erro.message);
         
-        // Restaurar botão
         botao.innerHTML = textoOriginal;
         botao.disabled = false;
         botao.style.opacity = '1';
     }
 });
 
-// 4. Função para mostrar sucesso (botão VERDE)
 function mostrarSucesso(botao) {
-    // Mudar para VERDE com "ENVIADO COM SUCESSO!"
     botao.innerHTML = 'ENVIADO COM SUCESSO! <img src="images/seta.svg" alt="Seta" class="btn-icon">';
     botao.style.background = '#4CAF50';
     botao.style.backgroundImage = 'none';
@@ -172,7 +156,6 @@ function mostrarSucesso(botao) {
     botao.style.color = 'white';
     botao.style.opacity = '1';
     
-    // Criar mensagem flutuante
     const mensagem = document.createElement('div');
     mensagem.textContent = '✅ Cadastro realizado!';
     mensagem.style.cssText = `
@@ -189,12 +172,10 @@ function mostrarSucesso(botao) {
     `;
     document.body.appendChild(mensagem);
     
-    // Remover mensagem após 3 segundos
     setTimeout(() => {
         mensagem.remove();
     }, 3000);
     
-    // Restaurar botão após 5 segundos
     setTimeout(() => {
         botao.innerHTML = 'QUERO PARTICIPAR <img src="images/seta.svg" alt="Seta" class="btn-icon">';
         botao.style.background = '';
@@ -205,27 +186,23 @@ function mostrarSucesso(botao) {
     }, 5000);
 }
 
-// 5. Limpar formulário
 function limparFormulario() {
     document.getElementById('name').value = '';
     document.getElementById('email').value = '';
     document.getElementById('whatsapp').value = '';
 }
 
-// 6. Teste no console
 window.testeFormulario = function() {
-    // Preencher formulário com dados de teste
     document.getElementById('name').value = 'João Silva';
     document.getElementById('email').value = 'teste' + Date.now() + '@teste.com';
     document.getElementById('whatsapp').value = '(11) 99999-9999';
-    
-    // Clicar no botão
     document.getElementById('btnEnviar').click();
 };
 </script>
 
+<!-- ===== SEÇÃO 5 - BENEFÍCIOS COM DIVISÓRIA E SETA ===== -->
 <section class="section-benefits">
-    <!-- DIVISÓRIA E SETA ADICIONADA - IGUALZINHA À QUE ESTAVA NA SEÇÃO 4 -->
+    <!-- DIVISÓRIA E SETA - EXATAMENTE IGUAL À QUE ESTAVA NA SEÇÃO 4 -->
     <div class="divider-container">
         <div class="divider-line"></div>
         <div class="arrow-only">
@@ -305,6 +282,7 @@ window.testeFormulario = function() {
         </div>
     </div>
 </section>
+
 <section class="s7-target-audience">
     <div class="s7-top-divider"></div>
 
@@ -337,6 +315,7 @@ window.testeFormulario = function() {
         </div>
     </div>
 </section>
+
 <section class="s8-not-for-you">
     <div class="s8-top-divider"></div>
 
@@ -369,6 +348,7 @@ window.testeFormulario = function() {
         </div>
     </div>
 </section>
+
 <section class="s9-biography">
     <div class="s9-container">
         <h2 class="s9-title">Conheça a médica anfitriã</h2>
@@ -411,6 +391,7 @@ window.testeFormulario = function() {
         </div>
     </div>
 </section>
+
 <section class="s10-access">
     <div class="s10-divider"></div>
 
@@ -464,6 +445,7 @@ window.testeFormulario = function() {
         </div>
     </div>
 </section>
+
 <section class="s11-faq">
     <div class="s11-divider"></div>
 
@@ -522,17 +504,17 @@ window.testeFormulario = function() {
             </details>
         </div>
     </div>
-    </section>
-    </section>
- <footer class="main-footer">
+</section>
+
+<!-- ===== RODAPÉ - CORRIGIDO ===== -->
+<footer class="main-footer">
     <div class="container">
         <p class="footer-text">
             © Todos os direitos reservados/D S Martins & Cia Ltda, 56.688.723/0001-80
         </p>
     </div>
 </footer>
-</section>
-    <!-- Carrega nosso script.js -->
-    <script src="script.js"></script>
+
+<script src="script.js"></script>
 </body>
 </html>
